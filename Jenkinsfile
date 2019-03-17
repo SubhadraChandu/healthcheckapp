@@ -1,26 +1,30 @@
-
-node {
-  try{
-    stage 'checkout project'
-    checkout scm
-
-    stage 'check env'
-    sh "mvn -v"
-    sh "java -version"
-
-    stage 'test'
-    sh "mvn test"
-
-    stage 'package'
-    sh "mvn package"
-
-    stage 'report'
-    step([$class: 'JUnitResultArchiver', testResults: '**/target/surefire-reports/TEST-*.xml'])
-
-    stage 'Artifact'
-    step([$class: 'ArtifactArchiver', artifacts: '**/target/*.jar', fingerprint: true])
-
-  }catch(e){
-    throw e;
-  }
-}
+pipeline {
+    agent {
+        docker {
+            image 'maven:3-alpine'
+            args '-v /root/.m2:/root/.m2'
+        }
+    }
+    stages {
+        stage('Build') {
+            steps {
+                sh 'mvn -B -DskipTests clean package'
+            }
+        }
+        stage('Test') {
+            steps {
+                sh 'mvn test'
+            }
+            post {
+	          always {
+	                    junit 'target/surefire-reports/*.xml'
+	                }
+	            }
+	        }
+	        stage('Deliver') {
+	            steps {
+	                sh './jenkins/scripts/deliver.sh'
+	            }
+	        }
+	    }
+	}
