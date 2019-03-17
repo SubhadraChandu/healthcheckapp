@@ -78,6 +78,7 @@
 				</executions>
 			</plugin>
 		</plugins>
+		<finalName>healtcheck-ci-cd</finalName>
 	</build>
 
 </project>
