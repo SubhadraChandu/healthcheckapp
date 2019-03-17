@@ -1,34 +1,36 @@
 pipeline {
-    agent any
-    tools{
-        jdk "jdk1.8"
-        Maven "apache-maven-3.0.5"
+  environment {
+    registry = "gustavoapolinario/docker-test"
+    registryCredential = 'dockerhub'
+    dockerImage = ''
+  }
+  agent any
+  stages {
+    stage('Cloning Git') {
+      steps {
+        git 'https://github.com/SubhadraChandu/healthcheckapp.git'
+      }
     }
-    stages {
-        stage('Checkout') {
-            steps {
-            git url: 'https://github.com/SubhadraChandu/healthcheckapp.git'
+    stage('Building image') {
+      steps{
+        script {
+          dockerImage = docker.build registry + ":$BUILD_NUMBER"
         }
-        stage('Build') {
-            steps {
-                sh 'mvn -B -DskipTests clean package'
-            }
+      }
+    }
+    stage('Deploy Image') {
+      steps{
+        script {
+          docker.withRegistry( '', registryCredential ) {
+            dockerImage.push()
+          }
         }
-        stage('Test') {
-            steps {
-                sh 'mvn test'
-            }
-            post {
-	          always {
-	                    junit 'target/surefire-reports/*.xml'
-	                }
-	            }
-	        }
-	        stage('Deliver') {
-	            steps {
-	                sh './jenkins/scripts/deliver.sh'
-	            }
-	        }
-	    }
-	}
-	}
+      }
+    }
+    stage('Remove Unused docker image') {
+      steps{
+        sh "docker rmi $registry:$BUILD_NUMBER"
+      }
+    }
+  }
+}
