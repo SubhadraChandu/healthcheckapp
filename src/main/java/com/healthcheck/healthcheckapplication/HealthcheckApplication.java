@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 @SpringBootApplication
-public class HealthcheckapplicationApplication implements HealthIndicator {
+public class HealthcheckApplication implements HealthIndicator {
 
 	Runtime runtime = Runtime.getRuntime();
 	Process process = runtime.exec("git rev-parse HEAD");
@@ -21,7 +21,7 @@ public class HealthcheckapplicationApplication implements HealthIndicator {
 	@Value("${info.app.version}")
 	String version ;
 
-	public HealthcheckapplicationApplication() throws IOException {
+	public HealthcheckApplication() throws IOException {
 	}
 
 	@Override
@@ -35,9 +35,11 @@ public class HealthcheckapplicationApplication implements HealthIndicator {
 			return new Health.Builder().down(ex).build();
 		}
 	}
-	public static void main(String[] args) {
 
-		SpringApplication.run(HealthcheckapplicationApplication.class, args);
+
+	public static void main(String[] args) throws IOException {
+
+		SpringApplication.run(HealthcheckApplication.class, args);
 	}
 
 }
