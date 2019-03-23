@@ -1,9 +1,5 @@
 pipeline{
-    angent{
-        doker{
-            image 'alpine'
-        }
-    }
+    agent any
     stages{
         stage('Hello from GitHub'){
             steps{
