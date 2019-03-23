@@ -1,5 +1,7 @@
 pipeline{
-    angent any
+    angent {
+    label 'linux'
+    }
     stages{
         stage('Hello from GitHub'){
             steps{
