@@ -1,9 +1,28 @@
 pipeline{
     agent any
+    tools{
+        maven 'Maven'
+    }
     stages{
-        stage('Hello from GitHub'){
+        stage('checkout'){
             steps{
-                echo "Hello World!"
+                git 'https://github.com/SubhadraChandu/healthcheckapp.git'
+            }
+        }
+        stage('Build'){
+            steps{
+                sh 'mvn clean compile'
+            }
+        }
+        stage('Test'){
+            steps{
+                sh 'mvn test'
+                junit '**/target/surefire-reports/TEST-*.xml'
+            }
+        }
+        stage('Package'){
+            steps{
+                sh 'mvn package'
             }
         }
     }
