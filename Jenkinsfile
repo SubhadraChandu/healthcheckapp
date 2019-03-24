@@ -18,6 +18,7 @@ pipeline{
             steps{
                 sh 'mvn test'
                 junit '**/target/surefire-reports/TEST-*.xml'
+                archiveArtifact artifacts: 'target/*.jar', fingerprint: true
             }
         }
 
