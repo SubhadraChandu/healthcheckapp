@@ -21,7 +21,7 @@ pipeline{
             }
         }
         stage('Deploy'){
-            stpes{
+            steps{
                 input 'Do you approve the deployment'
                 echo 'Deploying.....'
             }
