@@ -1,8 +1,6 @@
 pipeline{
     agent any
-    tools{
-        maven 'Maven'
-    }
+
     stages{
         stage('checkout'){
             steps{
@@ -20,10 +18,6 @@ pipeline{
                 junit '**/target/surefire-reports/TEST-*.xml'
             }
         }
-        stage('Package'){
-            steps{
-                sh 'mvn package'
-            }
-        }
+
     }
 }
