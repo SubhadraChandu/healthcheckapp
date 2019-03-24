@@ -23,7 +23,7 @@ pipeline{
         stage('Deploy'){
             steps{
                 input 'Do you approve the deployment'
-                sh 'java -jar healtcheck-ci-cd.jar &'
+                sh "'java -jar healtcheck-ci-cd.jar &'"
             }
         }
     }
