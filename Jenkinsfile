@@ -24,7 +24,7 @@ pipeline{
             steps{
                 input 'Do you approve the deployment'
                 sh 'scp target/*.jar subhadra chandu@120.144.10.73'
-                sh "ssh subhadra chandu@120.144.10.73 'nohup java -jar /Users/subhadra/Documents/IntelliJProjects/healthcheckapplication/target/healtcheck-ci-cd.jar &'"
+                sh "ssh subhadrachandu@120.144.10.73 'nohup java -jar /Users/subhadra/Documents/IntelliJProjects/healthcheckapplication/target/healtcheck-ci-cd.jar &'"
             }
         }
     }
