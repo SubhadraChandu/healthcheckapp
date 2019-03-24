@@ -18,9 +18,13 @@ pipeline{
             steps{
                 sh 'mvn test'
                 junit '**/target/surefire-reports/TEST-*.xml'
-                archiveArtifact artifacts: 'target/*.jar', fingerprint: true
             }
         }
-
+        stage('Deploy'){
+            stpes{
+                input 'Do you approve the deployment'
+                echo 'Deploying.....'
+            }
+        }
     }
 }
