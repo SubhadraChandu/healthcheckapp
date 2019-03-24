@@ -23,7 +23,6 @@ pipeline{
         stage('Deploy'){
             steps{
                 input 'Do you approve the deployment'
-                sh 'scp target/*.jar subhadrachandu@120.144.10.73'
                 sh "ssh subhadrachandu@120.144.10.73 'nohup java -jar /Users/subhadra/Documents/IntelliJProjects/healthcheckapplication/target/healtcheck-ci-cd.jar &'"
             }
         }
